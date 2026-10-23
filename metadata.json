@@ -1,0 +1,6 @@
+{
+  "name": "Magis AI dengan Cikgu Wan",
+  "description": "Platform e-kedai interaktif untuk Pakej Modul Magis AI mengikut Standard Pembelajaran, lengkap dengan Permainan 3D Gelanggang Tenis Cikgu Wan, Aplikasi Magis Prompter AI, dan Komuniti Guru Kreatif.",
+  "requestFramePermissions": ["camera"],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
