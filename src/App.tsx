@@ -1,14 +1,17 @@
 import React, { useEffect, useState } from 'react';
 import {
   Award,
+  BookOpen,
   Calendar,
   CheckCircle2,
   ChevronLeft,
   ChevronRight,
-  Film,
   Gamepad2,
   MessageCircle,
   Sparkles,
+  Trophy,
+  Users,
+  Video,
   Wand2,
 } from 'lucide-react';
 import { CroppedArt, MASTER_UI_IMAGE } from './components/CroppedArt';
@@ -24,8 +27,10 @@ import { DeliveryReceipt } from './utils/magisLogic';
 type NavKey = 'utama' | 'modul' | 'gamifikasi' | 'prompter' | 'komuniti' | 'panduan';
 
 /**
- * 3D Sporty Long Track Pants Overlay ("pakai seluar panjang") for Card 3 (Gelanggang Tenis Cikgu Wan 3D).
- * Covers Cikgu Wan's shorts & bare legs with tailored navy-blue 3D athletic track pants with sky-blue side stripes.
+ * Symmetrical 3D Sporty Long Track Pants Overlay ("baiki simetri seluar panjang")
+ * for Card 3 (Gelanggang Tenis Cikgu Wan 3D).
+ * Designed with balanced Bezier curves, equal leg widths, 3D knee highlights,
+ * and symmetrical twin athletic side stripes down to both white sneakers.
  */
 const CikguWanLongPantsOverlay: React.FC = () => (
   <svg
@@ -35,70 +40,90 @@ const CikguWanLongPantsOverlay: React.FC = () => (
     className="absolute inset-0 w-full h-full pointer-events-none"
   >
     <defs>
-      <linearGradient id="cikguPantsGradLeft" x1="0%" y1="0%" x2="100%" y2="100%">
+      <linearGradient id="symPantsLeft" x1="0%" y1="0%" x2="100%" y2="100%">
         <stop offset="0%" stopColor="#1e3a8a" />
         <stop offset="55%" stopColor="#172554" />
         <stop offset="100%" stopColor="#0f172a" />
       </linearGradient>
-      <linearGradient id="cikguPantsGradRight" x1="0%" y1="0%" x2="100%" y2="100%">
-        <stop offset="0%" stopColor="#1d4ed8" />
-        <stop offset="50%" stopColor="#1e3a8a" />
-        <stop offset="100%" stopColor="#172554" />
+      <linearGradient id="symPantsRight" x1="100%" y1="0%" x2="0%" y2="100%">
+        <stop offset="0%" stopColor="#1e3a8a" />
+        <stop offset="55%" stopColor="#172554" />
+        <stop offset="100%" stopColor="#0f172a" />
+      </linearGradient>
+      <linearGradient id="symPantsHighlight" x1="0%" y1="0%" x2="0%" y2="100%">
+        <stop offset="0%" stopColor="#38bdf8" stopOpacity="0.32" />
+        <stop offset="100%" stopColor="#1d4ed8" stopOpacity="0.05" />
       </linearGradient>
     </defs>
 
-    {/* Viewer's Left Leg Track Pants (extending from waist down to left white sneaker) */}
+    {/* Symmetrical Upper Shorts-to-Trousers Bridge */}
     <path
-      d="M 24.5 36.8 L 38.2 39.2 L 29.5 48.2 L 19.0 54.4 L 12.2 52.0 L 21.0 44.0 Z"
-      fill="url(#cikguPantsGradLeft)"
+      d="M 24.8 37.5 Q 37.5 39.2 50.2 37.5 L 51.0 42.2 Q 37.5 43.8 24.0 42.2 Z"
+      fill="#172554"
+    />
+
+    {/* Viewer's Left Trouser Leg — Smooth symmetrical taper from shorts hem to left sneaker */}
+    <path
+      d="M 24.2 39.5 C 20.5 44.2, 16.5 48.2, 12.6 52.0 L 19.8 54.5 C 24.8 49.8, 30.5 45.2, 36.5 41.2 Z"
+      fill="url(#symPantsLeft)"
       stroke="#0f172a"
-      strokeWidth="0.6"
+      strokeWidth="0.5"
       strokeLinejoin="round"
     />
-    {/* Sporty Side Stripe on Viewer's Left Leg */}
+    {/* Left Leg 3D Knee Highlight */}
     <path
-      d="M 25.2 37.8 L 21.6 44.5 L 13.8 52.1"
+      d="M 28.5 41.2 Q 22.2 46.8 16.2 52.8"
       fill="none"
-      stroke="#38bdf8"
-      strokeWidth="1.1"
+      stroke="url(#symPantsHighlight)"
+      strokeWidth="2.4"
       strokeLinecap="round"
     />
-    {/* Ankle Cuff on Viewer's Left Leg */}
+    {/* Left Leg Symmetrical White + Cyan Sport Stripe */}
     <path
-      d="M 12.2 51.8 L 19.0 54.2"
+      d="M 25.0 40.0 C 21.2 44.6, 17.2 48.5, 13.5 52.1"
+      fill="none"
+      stroke="#e0f2fe"
+      strokeWidth="0.9"
+      strokeLinecap="round"
+    />
+    {/* Left Leg Ribbed Ankle Cuff */}
+    <path
+      d="M 12.6 51.9 L 19.8 54.4"
       stroke="#0284c7"
-      strokeWidth="1.3"
+      strokeWidth="1.25"
       strokeLinecap="round"
     />
 
-    {/* Viewer's Right Leg Track Pants (extending from waist through bent knee to right sneaker) */}
+    {/* Viewer's Right Trouser Leg — Symmetrical coverage over bent right knee down to right sneaker */}
     <path
-      d="M 34.5 38.5 L 48.0 36.6 L 51.5 44.6 L 47.4 50.6 L 41.0 49.2 L 43.4 44.2 L 34.5 41.2 Z"
-      fill="url(#cikguPantsGradRight)"
+      d="M 36.5 41.2 C 40.2 44.0, 42.2 46.5, 41.0 49.5 L 48.2 50.8 C 51.8 47.0, 52.8 43.2, 50.5 38.2 Z"
+      fill="url(#symPantsRight)"
       stroke="#0f172a"
-      strokeWidth="0.6"
+      strokeWidth="0.5"
       strokeLinejoin="round"
     />
-    {/* Sporty Side Stripe on Viewer's Right Leg */}
+    {/* Right Leg 3D Knee Highlight */}
     <path
-      d="M 47.2 37.5 L 50.2 44.5 L 46.5 50.0"
+      d="M 43.8 40.5 Q 47.2 45.0 44.6 49.8"
       fill="none"
-      stroke="#38bdf8"
-      strokeWidth="1.1"
+      stroke="url(#symPantsHighlight)"
+      strokeWidth="2.4"
       strokeLinecap="round"
     />
-    {/* Ankle Cuff on Viewer's Right Leg */}
+    {/* Right Leg Symmetrical White + Cyan Sport Stripe */}
     <path
-      d="M 41.2 49.0 L 47.4 50.4"
+      d="M 49.6 39.0 C 51.4 43.2, 50.6 46.8, 47.4 50.3"
+      fill="none"
+      stroke="#e0f2fe"
+      strokeWidth="0.9"
+      strokeLinecap="round"
+    />
+    {/* Right Leg Ribbed Ankle Cuff */}
+    <path
+      d="M 41.0 49.4 L 48.2 50.7"
       stroke="#0284c7"
-      strokeWidth="1.3"
+      strokeWidth="1.25"
       strokeLinecap="round"
-    />
-
-    {/* Waistband Join */}
-    <path
-      d="M 24.5 36.8 Q 36.2 38.8 48.0 36.6 L 48.4 39.6 Q 36.2 41.6 24.2 39.5 Z"
-      fill="#0f172a"
     />
   </svg>
 );
@@ -106,7 +131,7 @@ const CikguWanLongPantsOverlay: React.FC = () => (
 export default function App() {
   const [activeNav, setActiveNav] = useState<NavKey>('utama');
   const [heroSlide, setHeroSlide] = useState<0 | 1 | 2>(0);
-  const [activeFeaturePill, setActiveFeaturePill] = useState<number | null>(null);
+  const [activeFeaturePill, setActiveFeaturePill] = useState<string | null>(null);
   const [mysteryToast, setMysteryToast] = useState<string | null>(null);
 
   // Interactive Modals
@@ -167,11 +192,25 @@ export default function App() {
     });
   };
 
-  const featurePillDetails = [
+  const slide0FeatureDetails = [
     'Grafik 3D Interaktif: Gelanggang sukan 3D lancar dengan pengesanan gerakan tangan kamera web & tetikus.',
     'Mode Solo & Multiplayer: Sesuai untuk ulang kaji kendiri atau pertandingan antara kumpulan di dalam kelas.',
     'Kuiz & Cabaran: Soalan Standard Pembelajaran (DSKP) muncul secara automatik setiap kali mata seri!',
     'Sesuai Semua Mata Pelajaran: Boleh digunakan untuk BM, BI, Matematik, Sains, Sejarah & Pendidikan Islam.',
+  ];
+
+  const slide1Pills = [
+    { icon: Video, label: 'Kamera & Mouse', detail: 'Kawalan Tangan AI melalui kamera web laptop atau gerakan tetikus.' },
+    { icon: Trophy, label: 'Skor & Pasukan', detail: 'Papan markah langsung untuk pertandingan antara kumpulan murid.' },
+    { icon: Gamepad2, label: 'Kuiz DSKP KPM', detail: 'Soalan objektif muncul secara automatik setiap kali rali tenis.' },
+    { icon: Users, label: 'Mesra Smartboard', detail: 'Paparan skrin penuh yang lancar di projektor & Smartboard kelas.' },
+  ];
+
+  const slide2Pills = [
+    { icon: BookOpen, label: 'Contoh Modul PDF', detail: 'Pratonton halaman modul langkah demi langkah mengikut DSKP.' },
+    { icon: Wand2, label: 'Prompter Ringkas', detail: 'Salin contoh prompt ringkas terus ke Gemini, Claude & ChatGPT.' },
+    { icon: Calendar, label: 'Bengkel 31 Okt', detail: 'Bengkel Hands-On 2 Jam: 31 Okt 2026, 8:30 Malam di Google Meet.' },
+    { icon: MessageCircle, label: 'Coaching 1-to-1', detail: 'Group Sokongan WhatsApp VIP bersama Cikgu Wan.' },
   ];
 
   return (
@@ -192,10 +231,7 @@ export default function App() {
         >
           <div className="flex items-center gap-2 text-xs sm:text-sm font-bold text-amber-300">
             <Sparkles className="w-4 h-4 shrink-0 text-amber-400 animate-spin" />
-            <span>
-              {mysteryToast ||
-                (activeFeaturePill !== null ? featurePillDetails[activeFeaturePill] : '')}
-            </span>
+            <span>{mysteryToast || activeFeaturePill}</span>
           </div>
           <button
             type="button"
@@ -212,7 +248,7 @@ export default function App() {
 
       {/* =======================================================================
           DESKTOP & TABLET LANDSCAPE EXACT 1:1 CONSOLE INTERFACE (md:block)
-          Matches 8F379228-3588-4F86-9EC6-403D3998BC11.PNG 100% + Animated Cikgu Wan
+          Matches 8F379228-3588-4F86-9EC6-403D3998BC11.PNG 100%
          ======================================================================= */}
       <main className="hidden md:block relative z-10 w-full max-w-[1672px] mx-auto px-1 sm:px-2 py-1">
         <div className="relative w-full aspect-[1672/941] rounded-2xl overflow-hidden shadow-[0_0_70px_rgba(14,165,233,0.35)] border border-sky-300/30">
@@ -226,7 +262,7 @@ export default function App() {
           />
 
           {/* ===================================================================
-              1A. LIVE ANIMATED CIKGU WAN MASCOT (MATA BERKELIP & MULUT BERGERAK SENYUM)
+              1A. LIVE ANIMATED BLINKING EYES (CIKGU WAN + ROBOTS) — NEUTRAL SMILE
              =================================================================== */}
           {/* Left Mascot Cikgu Wan — Blinking Left Eyelid (inside glasses) */}
           <div
@@ -238,48 +274,26 @@ export default function App() {
             aria-hidden="true"
             className="animate-cikgu-blink absolute left-[9.25%] top-[28.0%] w-[2.45%] h-[2.9%] -rotate-[9deg] rounded-full bg-gradient-to-b from-[#d99b72] via-[#e8b088] to-[#c6865e] border-b-2 border-[#3b2316] pointer-events-none z-20"
           />
-          {/* Skin-toned base behind mouth so mouth can close & open into a smile smoothly */}
-          <div
-            aria-hidden="true"
-            className="absolute left-[7.35%] top-[34.3%] w-[3.75%] h-[2.95%] -rotate-[9deg] rounded-b-2xl bg-gradient-to-b from-[#ebb48d] to-[#dc9e76] pointer-events-none z-20"
-          />
-          {/* Left Mascot Cikgu Wan — Moving & Smiling Mouth */}
-          <div
-            aria-hidden="true"
-            className="animate-cikgu-mouth absolute left-[7.45%] top-[34.4%] w-[3.55%] h-[2.75%] -rotate-[9deg] pointer-events-none z-20 flex items-center justify-center"
-          >
-            <div className="w-full h-full rounded-b-full bg-gradient-to-b from-[#7f1d1d] via-[#991b1b] to-[#dc2626] border border-[#451a03]/80 overflow-hidden flex flex-col justify-between items-center shadow-inner">
-              <div className="w-[84%] h-[38%] bg-white rounded-b-sm" />
-              <div className="w-[58%] h-[34%] bg-rose-400 rounded-t-full" />
-            </div>
-          </div>
 
-          {/* Hero Banner Cikgu Wan (when on Slide 0) — Blinking Eyes & Moving Smiling Mouth */}
-          {heroSlide === 0 && (
-            <>
-              <div
-                aria-hidden="true"
-                className="animate-cikgu-blink absolute left-[52.3%] top-[23.8%] w-[1.5%] h-[2.0%] -rotate-[5deg] rounded-full bg-gradient-to-b from-[#d99b72] via-[#e8b088] to-[#c6865e] border-b border-[#3b2316] pointer-events-none z-20"
-              />
-              <div
-                aria-hidden="true"
-                className="animate-cikgu-blink absolute left-[54.8%] top-[23.2%] w-[1.6%] h-[2.0%] -rotate-[5deg] rounded-full bg-gradient-to-b from-[#d99b72] via-[#e8b088] to-[#c6865e] border-b border-[#3b2316] pointer-events-none z-20"
-              />
-              <div
-                aria-hidden="true"
-                className="absolute left-[53.85%] top-[26.75%] w-[2.2%] h-[1.85%] -rotate-[5deg] rounded-b-xl bg-[#ebb48d] pointer-events-none z-20"
-              />
-              <div
-                aria-hidden="true"
-                className="animate-cikgu-mouth absolute left-[53.9%] top-[26.8%] w-[2.1%] h-[1.75%] -rotate-[5deg] pointer-events-none z-20 flex items-center justify-center"
-              >
-                <div className="w-full h-full rounded-b-full bg-gradient-to-b from-[#7f1d1d] to-[#dc2626] overflow-hidden flex flex-col justify-between items-center">
-                  <div className="w-[82%] h-[36%] bg-white" />
-                  <div className="w-[55%] h-[32%] bg-rose-400 rounded-t-full" />
-                </div>
-              </div>
-            </>
-          )}
+          {/* Hero Banner Cikgu Wan — Blinking Eyes */}
+          <div
+            aria-hidden="true"
+            className="animate-cikgu-blink absolute left-[52.3%] top-[23.8%] w-[1.5%] h-[2.0%] -rotate-[5deg] rounded-full bg-gradient-to-b from-[#d99b72] via-[#e8b088] to-[#c6865e] border-b border-[#3b2316] pointer-events-none z-20"
+          />
+          <div
+            aria-hidden="true"
+            className="animate-cikgu-blink absolute left-[54.8%] top-[23.2%] w-[1.6%] h-[2.0%] -rotate-[5deg] rounded-full bg-gradient-to-b from-[#d99b72] via-[#e8b088] to-[#c6865e] border-b border-[#3b2316] pointer-events-none z-20"
+          />
+
+          {/* Right Sidebar Treasure Chest Cute Robot — Blinking Digital Visor Eyes */}
+          <div
+            aria-hidden="true"
+            className="animate-robot-blink absolute left-[89.6%] top-[43.2%] w-[0.9%] h-[1.1%] rounded-full bg-[#050b1a] pointer-events-none z-20"
+          />
+          <div
+            aria-hidden="true"
+            className="animate-robot-blink absolute left-[91.2%] top-[43.2%] w-[0.9%] h-[1.1%] rounded-full bg-[#050b1a] pointer-events-none z-20"
+          />
 
           {/* Clicking Cikgu Wan's Character Face/Body opens his Mindblowing Google Edu Speaker Profile */}
           <button
@@ -293,7 +307,7 @@ export default function App() {
             </span>
           </button>
 
-          {/* Interactive Speech Bubble / Speaker Profile Badge next to Cikgu Wan */}
+          {/* Interactive Speaker Profile Badge next to Cikgu Wan */}
           <button
             type="button"
             onClick={() => setSpeakerProfileOpen(true)}
@@ -329,7 +343,7 @@ export default function App() {
               setTennisInitialMode('play');
               setTennisModalOpen(true);
             }}
-            aria-label="Cuba Konsol Magis AI Cikgu Wan"
+            aria-label="Lihat Demo Sekarang Konsol Magis AI Cikgu Wan"
             className="absolute left-[4.4%] top-[36.8%] w-[19.2%] h-[15.2%] -rotate-6 rounded-2xl hover:scale-105 transition-transform duration-300 group focus:outline-none z-20"
           >
             <div className="w-full h-full rounded-2xl shimmer-btn group-hover:ring-2 group-hover:ring-sky-400/80" />
@@ -337,7 +351,6 @@ export default function App() {
 
           {/* 2. Top Navigation Bar Interactive Buttons */}
           <nav aria-label="Navigasi Utama Konsol">
-            {/* Utama */}
             <button
               type="button"
               onClick={() => handleNavigation('utama')}
@@ -350,7 +363,6 @@ export default function App() {
               <span className="sr-only">Utama</span>
             </button>
 
-            {/* Modul */}
             <button
               type="button"
               onClick={() => handleNavigation('modul')}
@@ -363,7 +375,6 @@ export default function App() {
               <span className="sr-only">Modul</span>
             </button>
 
-            {/* Gamifikasi */}
             <button
               type="button"
               onClick={() => handleNavigation('gamifikasi')}
@@ -376,7 +387,6 @@ export default function App() {
               <span className="sr-only">Gamifikasi</span>
             </button>
 
-            {/* Prompter */}
             <button
               type="button"
               onClick={() => handleNavigation('prompter')}
@@ -389,7 +399,6 @@ export default function App() {
               <span className="sr-only">Prompter</span>
             </button>
 
-            {/* Komuniti */}
             <button
               type="button"
               onClick={() => handleNavigation('komuniti')}
@@ -402,7 +411,6 @@ export default function App() {
               <span className="sr-only">Komuniti</span>
             </button>
 
-            {/* Panduan */}
             <button
               type="button"
               onClick={() => handleNavigation('panduan')}
@@ -505,99 +513,103 @@ export default function App() {
             <div className="w-full h-full rounded-2xl group-hover:shadow-[0_0_30px_rgba(251,191,36,0.75)]" />
           </button>
 
-          {/* 4. HERO BANNER SLIDER STAGE (Center-Top: x=21.8%, y=13.8%, w=54.4%, h=33.8%) */}
+          {/* ===================================================================
+              4. HERO BANNER SLIDER STAGE (Center-Top: x=21.8%, y=13.8%, w=54.4%, h=33.8%)
+              Slaid 1, Slaid 2 & Slaid 3 all share the sleek 3D game banner aesthetic!
+             =================================================================== */}
           <div className="absolute left-[21.8%] top-[13.8%] w-[54.4%] h-[33.8%] rounded-[22px] overflow-hidden">
-            {/* Slide 1 & Slide 2 Overlay Transitions when user clicks < or > */}
+            {/* SLAID 2: Concise & Styled Just Like Slaid 1 (3D Title Badge + 4 Glass Pills + Bottom CTA) */}
             {heroSlide === 1 && (
-              <div className="absolute inset-0 z-10 bg-gradient-to-r from-indigo-950/95 via-sky-950/95 to-emerald-950/95 pl-14 pr-14 py-5 flex flex-col justify-between border-2 border-sky-300/50 rounded-[22px]">
-                <div className="space-y-1.5 max-w-xl">
-                  <div className="text-xs font-extrabold text-amber-300">
-                    SLAID 02 · TRAILER & FUNGSI KAWALAN TANGAN AI (HAND-GESTURE)
+              <>
+                {/* Left 3D Game Title Badge replacing the Slide 1 title area cleanly */}
+                <div className="absolute left-[7.2%] top-[5.8%] w-[41.8%] h-[50.5%] rounded-2xl bg-gradient-to-b from-[#0b1d52] via-[#0e296b] to-[#081538] border-2 border-sky-300/80 shadow-[0_10px_28px_rgba(2,132,199,0.65)] p-2.5 flex flex-col items-center justify-center text-center -rotate-2 z-20">
+                  <span className="px-2.5 py-0.5 rounded-full bg-gradient-to-r from-amber-400 to-yellow-300 text-slate-950 font-black text-[9px] lg:text-[11px] uppercase tracking-wider shadow">
+                    KAWALAN TANGAN AI
+                  </span>
+                  <div className="font-display font-black text-base lg:text-2xl text-white drop-shadow-[0_2px_8px_rgba(56,189,248,0.8)] leading-none mt-1">
+                    SUKAN TENIS 3D
                   </div>
-                  <h2 className="text-xl lg:text-2xl font-black text-white">
-                    Hayun Tangan Di Hadapan Kamera Laptop — Seperti Sukan Konsol!
-                  </h2>
-                  <p className="text-xs lg:text-sm text-sky-100 leading-relaxed">
-                    Murid boleh bermain secara aktif menggunakan pergerakan tangan (Hand-Gesture) atau tetikus sambil menjawab soalan Standard Pembelajaran KPM setiap kali mata seri!
-                  </p>
+                  <div className="mt-1.5 px-2.5 py-0.5 rounded-full bg-sky-500/30 border border-sky-300/60 text-[8.5px] lg:text-[10px] font-bold text-sky-100 truncate max-w-full">
+                    Hayun Tangan · Jawab Kuiz · Skor!
+                  </div>
                 </div>
-                <div className="flex items-center gap-3">
-                  <button
-                    type="button"
-                    onClick={() => {
-                      setTennisInitialMode('trailer');
-                      setTennisModalOpen(true);
-                    }}
-                    className="px-5 py-2.5 rounded-full bg-gradient-to-r from-pink-500 to-rose-500 text-white font-extrabold text-xs shadow-lg flex items-center gap-2"
-                  >
-                    <Film className="w-4 h-4" />
-                    Tonton Trailer Penuh
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => {
-                      setTennisInitialMode('play');
-                      setTennisModalOpen(true);
-                    }}
-                    className="px-5 py-2.5 rounded-full bg-sky-500 text-slate-950 font-extrabold text-xs shadow-lg flex items-center gap-2"
-                  >
-                    <Gamepad2 className="w-4 h-4" />
-                    Cuba Main 3D Sekarang
-                  </button>
-                </div>
-              </div>
+
+                {/* Right 4 Sleek Glass Feature Pills (matching Slide 1 layout with 100% opaque backing) */}
+                {slide1Pills.map((pill, idx) => {
+                  const Icon = pill.icon;
+                  return (
+                    <button
+                      key={pill.label}
+                      type="button"
+                      onClick={() => setActiveFeaturePill(pill.detail)}
+                      style={{ top: `${15.8 + idx * 17.5}%` }}
+                      className="absolute z-20 left-[74.0%] w-[21.6%] h-[16.2%] rounded-full bg-[#091538] hover:bg-[#10255e] border border-sky-300/70 px-2.5 flex items-center gap-2 text-left shadow-md transition hover:scale-105"
+                    >
+                      <span className="w-5 h-5 rounded-full bg-sky-400/20 border border-sky-300/60 flex items-center justify-center shrink-0">
+                        <Icon className="w-3 h-3 text-sky-300" />
+                      </span>
+                      <span className="text-[9px] lg:text-[10.5px] font-extrabold text-white leading-tight truncate">
+                        {pill.label}
+                      </span>
+                    </button>
+                  );
+                })}
+              </>
             )}
 
+            {/* SLAID 3: Concise & Styled Just Like Slaid 1 (3D Title Badge + 4 Glass Pills + Bottom CTA) */}
             {heroSlide === 2 && (
-              <div className="absolute inset-0 z-10 bg-gradient-to-r from-amber-950/95 via-slate-900/95 to-indigo-950/95 pl-14 pr-14 py-5 flex flex-col justify-between border-2 border-amber-300/50 rounded-[22px]">
-                <div className="space-y-1.5 max-w-xl">
-                  <div className="text-xs font-extrabold text-amber-300">
-                    SLAID 03 · BENGKEL HANDS-ON GOOGLE MEET + COACHING WHATSAPP 1-TO-1
+              <>
+                {/* Left 3D Game Title Badge */}
+                <div className="absolute left-[7.2%] top-[5.8%] w-[41.8%] h-[50.5%] rounded-2xl bg-gradient-to-b from-[#1e1b4b] via-[#172554] to-[#081538] border-2 border-amber-300/85 shadow-[0_10px_28px_rgba(251,191,36,0.5)] p-2.5 flex flex-col items-center justify-center text-center -rotate-2 z-20">
+                  <span className="px-2.5 py-0.5 rounded-full bg-gradient-to-r from-amber-400 to-orange-400 text-slate-950 font-black text-[9px] lg:text-[11px] uppercase tracking-wider shadow">
+                    MODUL & PROMPTER AI
+                  </span>
+                  <div className="font-display font-black text-base lg:text-2xl text-white drop-shadow-[0_2px_8px_rgba(251,191,36,0.6)] leading-none mt-1">
+                    BENGKEL LIVE 31 OKT
                   </div>
-                  <h2 className="text-xl lg:text-2xl font-black text-white">
-                    Bengkel Hands-On 2 Jam (31 Okt 2026, 8:30 Malam) Bersama Cikgu Wan!
-                  </h2>
-                  <p className="text-xs lg:text-sm text-slate-200 leading-relaxed">
-                    Dapatkan bimbingan secara langsung di Google Meet, Group Sokongan WhatsApp Coaching One-to-One, Modul PDF & Aplikasi Prompter AI untuk semua subjek.
-                  </p>
+                  <div className="mt-1.5 px-2.5 py-0.5 rounded-full bg-amber-400/25 border border-amber-300/60 text-[8.5px] lg:text-[10px] font-bold text-amber-200 truncate max-w-full">
+                    8:30 Malam · Google Meet + WhatsApp
+                  </div>
                 </div>
-                <div className="flex items-center gap-3">
-                  <button
-                    type="button"
-                    onClick={() => setSpeakerProfileOpen(true)}
-                    className="px-5 py-2.5 rounded-full bg-amber-400 text-slate-950 font-extrabold text-xs shadow-lg flex items-center gap-2"
-                  >
-                    <Award className="w-4 h-4" />
-                    Lihat Profil Penceramah (Google Edu)
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => setPrompterModalOpen(true)}
-                    className="px-5 py-2.5 rounded-full bg-white/15 hover:bg-white/25 text-white font-extrabold text-xs flex items-center gap-1.5"
-                  >
-                    <Wand2 className="w-3.5 h-3.5" />
-                    Buka Prompter AI
-                  </button>
-                </div>
-              </div>
+
+                {/* Right 4 Sleek Glass Feature Pills (matching Slide 1 layout with 100% opaque backing) */}
+                {slide2Pills.map((pill, idx) => {
+                  const Icon = pill.icon;
+                  return (
+                    <button
+                      key={pill.label}
+                      type="button"
+                      onClick={() => setActiveFeaturePill(pill.detail)}
+                      style={{ top: `${15.8 + idx * 17.5}%` }}
+                      className="absolute z-20 left-[74.0%] w-[21.6%] h-[16.2%] rounded-full bg-[#091538] hover:bg-[#10255e] border border-amber-300/70 px-2.5 flex items-center gap-2 text-left shadow-md transition hover:scale-105"
+                    >
+                      <span className="w-5 h-5 rounded-full bg-amber-400/20 border border-amber-300/60 flex items-center justify-center shrink-0">
+                        <Icon className="w-3 h-3 text-amber-300" />
+                      </span>
+                      <span className="text-[9px] lg:text-[10.5px] font-extrabold text-white leading-tight truncate">
+                        {pill.label}
+                      </span>
+                    </button>
+                  );
+                })}
+              </>
             )}
 
-            {/* Animated Glowing Tennis Ball Pulse when on Default Slide 0 */}
-            {heroSlide === 0 && (
-              <div
-                className="absolute left-[27.8%] top-[55.5%] w-[8.2%] h-[23%] rounded-full pointer-events-none animate-pulse"
-                style={{
-                  boxShadow: '0 0 32px 10px rgba(163, 230, 53, 0.55)',
-                }}
-              />
-            )}
+            {/* Animated Glowing Tennis Ball Pulse */}
+            <div
+              className="absolute left-[27.8%] top-[55.5%] w-[8.2%] h-[23%] rounded-full pointer-events-none animate-pulse"
+              style={{
+                boxShadow: '0 0 32px 10px rgba(163, 230, 53, 0.55)',
+              }}
+            />
 
             {/* Left Slider Arrow `<` */}
             <button
               type="button"
               onClick={() => setHeroSlide((s) => ((s + 2) % 3) as 0 | 1 | 2)}
               aria-label="Slaid Hero Sebelumnya"
-              className="absolute z-30 left-[2.0%] top-[41.5%] w-[5.2%] h-[15.5%] rounded-full bg-slate-950/40 hover:bg-slate-950/80 border border-white/30 flex items-center justify-center transition hover:scale-110"
+              className="absolute z-30 left-[2.0%] top-[41.5%] w-[5.2%] h-[15.5%] rounded-full bg-slate-950/50 hover:bg-slate-950/85 border border-white/40 flex items-center justify-center transition hover:scale-110"
             >
               <ChevronLeft className="w-5 h-5 text-white" />
             </button>
@@ -607,33 +619,54 @@ export default function App() {
               type="button"
               onClick={() => setHeroSlide((s) => ((s + 1) % 3) as 0 | 1 | 2)}
               aria-label="Slaid Hero Seterusnya"
-              className="absolute z-30 left-[93.0%] top-[48.0%] w-[5.2%] h-[15.5%] rounded-full bg-slate-950/40 hover:bg-slate-950/80 border border-white/30 flex items-center justify-center transition hover:scale-110"
+              className="absolute z-30 left-[93.0%] top-[48.0%] w-[5.2%] h-[15.5%] rounded-full bg-slate-950/50 hover:bg-slate-950/85 border border-white/40 flex items-center justify-center transition hover:scale-110"
             >
               <ChevronRight className="w-5 h-5 text-white" />
             </button>
 
-            {/* Center-Bottom Glowing Pink "Main Sekarang" Button on Slide 0 */}
-            {heroSlide === 0 && (
-              <button
-                type="button"
-                onClick={() => {
+            {/* Center-Bottom Glowing Pink Pill CTA Button ("Lihat Demo Sekarang" / "Lihat Contoh Modul") */}
+            <button
+              type="button"
+              onClick={() => {
+                if (heroSlide === 2) {
+                  setModuleInitialTab('magis-pdf');
+                  setModuleModalOpen(true);
+                } else {
                   setTennisInitialMode('play');
                   setTennisModalOpen(true);
-                }}
-                className="shimmer-btn absolute z-20 left-[39.6%] top-[78.8%] w-[29.8%] h-[18.5%] rounded-full hover:scale-105 transition-transform duration-200 focus:outline-none focus:ring-2 focus:ring-pink-300"
-              >
-                <span className="sr-only">Main Sekarang Gelanggang Tenis Cikgu Wan 3D</span>
-              </button>
-            )}
+                }
+              }}
+              className="shimmer-btn absolute z-20 left-[38.8%] top-[78.2%] w-[31.2%] h-[19.2%] rounded-full bg-gradient-to-b from-[#ff4d8d] via-[#f4256d] to-[#c81051] border-2 border-pink-200/90 shadow-[0_0_28px_rgba(244,37,109,0.85)] hover:scale-105 transition-transform duration-200 flex items-center justify-center gap-2 px-3 focus:outline-none focus:ring-2 focus:ring-pink-200"
+            >
+              <Gamepad2 className="w-4 h-4 lg:w-5 lg:h-5 text-white shrink-0" />
+              <span className="text-[11px] lg:text-[14px] font-black text-white tracking-wide whitespace-nowrap drop-shadow">
+                {heroSlide === 2 ? 'Lihat Contoh Modul' : 'Lihat Demo Sekarang'}
+              </span>
+            </button>
 
-            {/* 4 Interactive Feature Pills on the Right of Hero Banner */}
+            {/* Slide Indicator Dots at Top-Right of Hero Banner */}
+            <div className="absolute z-20 right-[4.5%] top-[5.5%] flex items-center gap-1.5 bg-slate-950/60 px-2 py-1 rounded-full border border-white/20">
+              {[0, 1, 2].map((dot) => (
+                <button
+                  key={dot}
+                  type="button"
+                  onClick={() => setHeroSlide(dot as 0 | 1 | 2)}
+                  aria-label={`Pergi ke Slaid ${dot + 1}`}
+                  className={`h-2 rounded-full transition-all ${
+                    heroSlide === dot ? 'w-5 bg-amber-400' : 'w-2 bg-white/50 hover:bg-white'
+                  }`}
+                />
+              ))}
+            </div>
+
+            {/* 4 Interactive Feature Pills on the Right of Hero Banner (Slide 0) */}
             {heroSlide === 0 &&
               [0, 1, 2, 3].map((pillIdx) => (
                 <button
                   key={pillIdx}
                   type="button"
-                  onClick={() => setActiveFeaturePill(pillIdx)}
-                  aria-label={featurePillDetails[pillIdx]}
+                  onClick={() => setActiveFeaturePill(slide0FeatureDetails[pillIdx])}
+                  aria-label={slide0FeatureDetails[pillIdx]}
                   style={{
                     top: `${16.5 + pillIdx * 17.5}%`,
                   }}
@@ -642,8 +675,8 @@ export default function App() {
               ))}
           </div>
 
-          {/* 5. THE 4 INTERACTIVE FEATURE CARDS (Exact Cropped 3D Cards with Lift & Glow!) */}
-          {/* Card 1: MODUL MAGIS AI CIKGU WAN */}
+          {/* 5. THE 4 INTERACTIVE FEATURE CARDS (Exact Cropped 3D Cards + Blinking Robots + Symmetrical Long Pants) */}
+          {/* Card 1: MODUL MAGIS AI CIKGU WAN (with Blinking Robot Eyes) */}
           <button
             type="button"
             onClick={() => {
@@ -652,14 +685,25 @@ export default function App() {
             }}
             className="absolute left-[22.25%] top-[49.0%] w-[13.35%] h-[36.6%] rounded-[22px] overflow-hidden shadow-lg hover:-translate-y-2 hover:scale-[1.025] hover:shadow-[0_14px_34px_rgba(14,165,233,0.55)] transition-all duration-300 group focus:outline-none focus:ring-2 focus:ring-sky-400"
           >
-            <CroppedArt
-              x={22.25}
-              y={49.0}
-              w={13.35}
-              h={36.6}
-              alt="Modul Magis AI Cikgu Wan — RPH, RPT, Soalan, BBM, Aktiviti, Latihan — Lihat Modul"
-              className="w-full h-full"
-            />
+            <div className="relative w-full h-full">
+              <CroppedArt
+                x={22.25}
+                y={49.0}
+                w={13.35}
+                h={36.6}
+                alt="Modul Magis AI Cikgu Wan — RPH, RPT, Soalan, BBM, Aktiviti, Latihan — Lihat Modul"
+                className="w-full h-full"
+              />
+              {/* Blinking Robot Visor Eyes on Card 1 */}
+              <div
+                aria-hidden="true"
+                className="animate-robot-blink absolute left-[47.5%] top-[46.8%] w-[6.2%] h-[4.5%] rounded-full bg-[#050b1a] pointer-events-none"
+              />
+              <div
+                aria-hidden="true"
+                className="animate-robot-blink absolute left-[58.2%] top-[46.8%] w-[6.2%] h-[4.5%] rounded-full bg-[#050b1a] pointer-events-none"
+              />
+            </div>
             <div className="shimmer-btn absolute inset-x-[6%] bottom-[3.5%] h-[13%] rounded-full group-hover:ring-2 group-hover:ring-white/80" />
           </button>
 
@@ -683,7 +727,7 @@ export default function App() {
             <div className="shimmer-btn absolute inset-x-[6%] bottom-[3.5%] h-[13%] rounded-full group-hover:ring-2 group-hover:ring-white/80" />
           </button>
 
-          {/* Card 3: GELANGGANG TENIS CIKGU WAN 3D (with 3D Sporty Long Track Pants "pakai seluar panjang") */}
+          {/* Card 3: GELANGGANG TENIS CIKGU WAN 3D (Symmetrical Long Pants + "Lihat Demo Sekarang") */}
           <button
             type="button"
             onClick={() => {
@@ -698,29 +742,45 @@ export default function App() {
                 y={49.0}
                 w={13.35}
                 h={36.6}
-                alt="Gelanggang Tenis Cikgu Wan 3D — Mod Latihan, Mod Pertandingan, Skor & Pencapaian — Main Sekarang"
+                alt="Gelanggang Tenis Cikgu Wan 3D — Lihat Demo Sekarang"
                 className="w-full h-full"
               />
-              {/* 3D Sporty Long Track Pants Overlay on Cikgu Wan */}
+              {/* Symmetrical 3D Sporty Long Track Pants Overlay on Cikgu Wan */}
               <CikguWanLongPantsOverlay />
             </div>
-            <div className="shimmer-btn absolute inset-x-[6%] bottom-[3.5%] h-[13%] rounded-full group-hover:ring-2 group-hover:ring-white/80" />
+            {/* Updated CTA Pill: "Lihat Demo Sekarang" replacing "Main Sekarang" */}
+            <div className="shimmer-btn absolute inset-x-[5.5%] bottom-[3.3%] h-[13.2%] rounded-full bg-gradient-to-r from-purple-600 via-fuchsia-600 to-purple-500 border border-purple-200/80 shadow-md flex items-center justify-center gap-1 px-2 group-hover:ring-2 group-hover:ring-white/90">
+              <span className="text-[9.5px] lg:text-[11px] font-black text-white tracking-tight whitespace-nowrap">
+                Lihat Demo Sekarang ›
+              </span>
+            </div>
           </button>
 
-          {/* Card 4: PROMPTER MAGIS AI */}
+          {/* Card 4: PROMPTER MAGIS AI (with Blinking Robot Eyes) */}
           <button
             type="button"
             onClick={() => setPrompterModalOpen(true)}
             className="absolute left-[63.8%] top-[49.0%] w-[12.65%] h-[36.6%] rounded-[22px] overflow-hidden shadow-lg hover:-translate-y-2 hover:scale-[1.025] hover:shadow-[0_14px_34px_rgba(249,115,22,0.6)] transition-all duration-300 group focus:outline-none focus:ring-2 focus:ring-amber-400"
           >
-            <CroppedArt
-              x={63.8}
-              y={49.0}
-              w={12.65}
-              h={36.6}
-              alt="Prompter Magis AI — RPH, Soalan, BBM, Aktiviti, Gamifikasi, Analisis — Cuba Prompter"
-              className="w-full h-full"
-            />
+            <div className="relative w-full h-full">
+              <CroppedArt
+                x={63.8}
+                y={49.0}
+                w={12.65}
+                h={36.6}
+                alt="Prompter Magis AI — RPH, Soalan, BBM, Aktiviti, Gamifikasi, Analisis — Cuba Prompter"
+                className="w-full h-full"
+              />
+              {/* Blinking Robot Visor Eyes on Card 4 */}
+              <div
+                aria-hidden="true"
+                className="animate-robot-blink absolute left-[50.5%] top-[44.5%] w-[6.5%] h-[4.2%] rounded-full bg-[#050b1a] pointer-events-none"
+              />
+              <div
+                aria-hidden="true"
+                className="animate-robot-blink absolute left-[61.8%] top-[44.5%] w-[6.5%] h-[4.2%] rounded-full bg-[#050b1a] pointer-events-none"
+              />
+            </div>
             <div className="shimmer-btn absolute inset-x-[6%] bottom-[3.5%] h-[13%] rounded-full group-hover:ring-2 group-hover:ring-white/80" />
           </button>
 
@@ -810,7 +870,7 @@ export default function App() {
 
       {/* =======================================================================
           MOBILE RESPONSIVE VIEW (md:hidden)
-          Uses the exact same visual panels + Animated Eyes/Mouth + Long Pants + Speaker Profile
+          Uses the exact same visual panels + Blinking Eyes + Symmetrical Long Pants
          ======================================================================= */}
       <main className="md:hidden relative z-10 w-full max-w-md mx-auto px-3 py-3 space-y-3">
         {/* Top Mobile Header with Mascot Logo & Quick Nav */}
@@ -841,15 +901,15 @@ export default function App() {
             </button>
             <button
               type="button"
-              onClick={() => handleNavigation('gamifikasi')}
-              className="px-2.5 py-1.5 rounded-lg bg-purple-500/20 border border-purple-400/40 text-[11px] font-bold text-purple-200"
+              onClick={() => handleNavigation('modul')}
+              className="px-2.5 py-1.5 rounded-lg bg-sky-500/20 border border-sky-400/40 text-[11px] font-bold text-sky-200"
             >
-              3D Tenis
+              Modul
             </button>
             <button
               type="button"
               onClick={() => handleNavigation('prompter')}
-              className="px-2.5 py-1.5 rounded-lg bg-sky-500/20 border border-sky-400/40 text-[11px] font-bold text-sky-200"
+              className="px-2.5 py-1.5 rounded-lg bg-purple-500/20 border border-purple-400/40 text-[11px] font-bold text-purple-200"
             >
               Prompter
             </button>
@@ -886,14 +946,14 @@ export default function App() {
           </span>
         </button>
 
-        {/* Exact Hero Banner Crop (`GELANGGANG TENIS CIKGU WAN 3D`) */}
+        {/* Exact Hero Banner Crop (`GELANGGANG TENIS CIKGU WAN 3D`) with "Lihat Demo Sekarang" */}
         <div className="relative rounded-2xl overflow-hidden border-2 border-sky-400/50 shadow-xl">
           <CroppedArt
             x={21.8}
             y={13.8}
             w={54.4}
             h={33.8}
-            alt="Gelanggang Tenis Cikgu Wan 3D — Main Sekarang"
+            alt="Gelanggang Tenis Cikgu Wan 3D — Lihat Demo Sekarang"
             className="w-full"
           />
           <button
@@ -902,9 +962,14 @@ export default function App() {
               setTennisInitialMode('play');
               setTennisModalOpen(true);
             }}
-            aria-label="Main Sekarang Gelanggang Tenis 3D"
-            className="absolute inset-0 w-full h-full"
-          />
+            aria-label="Lihat Demo Sekarang Gelanggang Tenis 3D"
+            className="shimmer-btn absolute left-[38.8%] top-[78.2%] w-[31.2%] h-[19.2%] rounded-full bg-gradient-to-b from-[#ff4d8d] via-[#f4256d] to-[#c81051] border border-pink-200 flex items-center justify-center gap-1 px-2 shadow-lg"
+          >
+            <Gamepad2 className="w-3.5 h-3.5 text-white shrink-0" />
+            <span className="text-[10px] font-black text-white whitespace-nowrap">
+              Lihat Demo Sekarang
+            </span>
+          </button>
         </div>
 
         {/* 2x2 Grid of the 4 Exact Feature Cards from the Image */}
@@ -915,7 +980,7 @@ export default function App() {
               setModuleInitialTab('magis-pdf');
               setModuleModalOpen(true);
             }}
-            className="rounded-2xl overflow-hidden shadow-lg border border-sky-400/40 active:scale-95 transition"
+            className="relative rounded-2xl overflow-hidden shadow-lg border border-sky-400/40 active:scale-95 transition"
           >
             <CroppedArt
               x={22.25}
@@ -924,6 +989,14 @@ export default function App() {
               h={36.6}
               alt="Modul Magis AI Cikgu Wan"
               className="w-full"
+            />
+            <div
+              aria-hidden="true"
+              className="animate-robot-blink absolute left-[47.5%] top-[46.8%] w-[6.2%] h-[4.5%] rounded-full bg-[#050b1a] pointer-events-none"
+            />
+            <div
+              aria-hidden="true"
+              className="animate-robot-blink absolute left-[58.2%] top-[46.8%] w-[6.2%] h-[4.5%] rounded-full bg-[#050b1a] pointer-events-none"
             />
           </button>
 
@@ -945,7 +1018,7 @@ export default function App() {
             />
           </button>
 
-          {/* Card 3 on Mobile with Long Pants Overlay */}
+          {/* Card 3 on Mobile with Symmetrical Long Pants + "Lihat Demo Sekarang" */}
           <button
             type="button"
             onClick={() => {
@@ -963,12 +1036,17 @@ export default function App() {
               className="w-full"
             />
             <CikguWanLongPantsOverlay />
+            <div className="shimmer-btn absolute inset-x-[5.5%] bottom-[3.3%] h-[13.2%] rounded-full bg-gradient-to-r from-purple-600 via-fuchsia-600 to-purple-500 border border-purple-200/80 flex items-center justify-center px-2">
+              <span className="text-[9px] font-black text-white whitespace-nowrap">
+                Lihat Demo Sekarang ›
+              </span>
+            </div>
           </button>
 
           <button
             type="button"
             onClick={() => setPrompterModalOpen(true)}
-            className="rounded-2xl overflow-hidden shadow-lg border border-amber-400/40 active:scale-95 transition"
+            className="relative rounded-2xl overflow-hidden shadow-lg border border-amber-400/40 active:scale-95 transition"
           >
             <CroppedArt
               x={63.8}
@@ -977,6 +1055,14 @@ export default function App() {
               h={36.6}
               alt="Prompter Magis AI"
               className="w-full"
+            />
+            <div
+              aria-hidden="true"
+              className="animate-robot-blink absolute left-[50.5%] top-[44.5%] w-[6.5%] h-[4.2%] rounded-full bg-[#050b1a] pointer-events-none"
+            />
+            <div
+              aria-hidden="true"
+              className="animate-robot-blink absolute left-[61.8%] top-[44.5%] w-[6.5%] h-[4.2%] rounded-full bg-[#050b1a] pointer-events-none"
             />
           </button>
         </div>

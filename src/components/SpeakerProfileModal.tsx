@@ -121,7 +121,7 @@ export const SpeakerProfileModal: React.FC<SpeakerProfileModalProps> = ({
                   <span className="text-sky-300 font-mono">ID #4797697018560512</span>
                 </div>
 
-                {/* 3D Character Portrait Crop with Live Blinking Eyes & Smiling Mouth */}
+                {/* 3D Character Portrait Crop with Live Blinking Eyes */}
                 <div className="relative z-10 my-3 rounded-2xl overflow-hidden border-2 border-sky-300/50 shadow-xl">
                   <CroppedArt
                     x={0.5}
@@ -141,16 +141,6 @@ export const SpeakerProfileModal: React.FC<SpeakerProfileModalProps> = ({
                     aria-hidden="true"
                     className="animate-cikgu-blink absolute left-[38.9%] top-[28.4%] w-[10.9%] h-[6.1%] -rotate-[9deg] rounded-full bg-gradient-to-b from-[#d99b72] via-[#e8b088] to-[#c6865e] border-b-2 border-[#3b2316] pointer-events-none"
                   />
-                  {/* Live Moving & Smiling Mouth inside Portrait Crop */}
-                  <div
-                    aria-hidden="true"
-                    className="animate-cikgu-mouth absolute left-[30.9%] top-[41.9%] w-[15.8%] h-[5.8%] -rotate-[9deg] pointer-events-none flex items-center justify-center"
-                  >
-                    <div className="w-full h-full rounded-b-full bg-gradient-to-b from-[#7f1d1d] via-[#991b1b] to-[#dc2626] border border-[#451a03]/80 overflow-hidden flex flex-col justify-between items-center shadow-inner">
-                      <div className="w-[82%] h-[36%] bg-white rounded-b-sm" />
-                      <div className="w-[55%] h-[34%] bg-rose-400 rounded-t-full" />
-                    </div>
-                  </div>
                 </div>
 
                 {/* Location & Official Directory Link */}

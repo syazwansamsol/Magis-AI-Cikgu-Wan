@@ -246,6 +246,24 @@ export function buildMagisPrompt(config: PromptBuilderConfig): string {
   ].join('\n');
 }
 
+export function buildShortPreviewPrompt(config: PromptBuilderConfig): string {
+  const categoryShortNames: Record<PromptCategory, string> = {
+    'permainan-3d-tangan': 'Permainan Mini 3D Interaktif',
+    'rph-lengkap-dskp': 'Ringkasan RPH DSKP KPM',
+    'kuiz-gamifikasi': 'Kuiz Gamifikasi Kelas',
+    'escape-room-kelas': 'Misi Mini Escape Room',
+    'bbm-visual-interaktif': 'Simulasi BBM Visual',
+  };
+
+  return [
+    `[CONTOH PROMPT RINGKAS (${config.aiTarget.toUpperCase()}) — VERSI PRATONTON]`,
+    `Bina ${categoryShortNames[config.category]} untuk subjek ${config.subject} (${config.level}) bertajuk "${config.topic}" mengikut DSKP: ${config.standardPembelajaran}.`,
+    `Sertakan 3 soalan kuiz interaktif mudah dalam Bahasa Melayu.`,
+    ``,
+    `🔒 [PROMPT MASTER PENUH 5-LAPIS DSKP + KOD 3D HAND-GESTURE + 120 TEMPLAT PRO TERKUNCI — Dapatkan Pakej Lengkap RM 30.00]`,
+  ].join('\n');
+}
+
 export function generateDeliveryReceipt(
   input: CheckoutFormInput,
   customOrderId?: string

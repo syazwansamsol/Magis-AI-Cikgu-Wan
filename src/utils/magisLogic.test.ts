@@ -4,6 +4,7 @@ import {
   calculateOrderSummary,
   validateCheckoutForm,
   buildMagisPrompt,
+  buildShortPreviewPrompt,
   generateDeliveryReceipt,
   computeTennisRallyOutcome,
   SPEAKER_PROFILE_DATA,
@@ -47,24 +48,30 @@ test('validateCheckoutForm rejects empty inputs and accepts valid Malaysian teac
   assert.equal(Object.keys(valid.errors).length, 0);
 });
 
-test('buildMagisPrompt builds complete curriculum prompt for Gemini, Claude, or ChatGPT', () => {
-  const prompt = buildMagisPrompt({
+test('buildMagisPrompt and buildShortPreviewPrompt generate full and brief curriculum prompts', () => {
+  const config = {
     subject: 'Sains',
     level: 'Tahun 4',
     topic: 'Sifat Cahaya (Pantulan & Pembiasan)',
     standardPembelajaran: '5.1.2 Membanding dan membezakan bayang-bayang',
-    category: 'permainan-3d-tangan',
-    aiTarget: 'Gemini',
+    category: 'permainan-3d-tangan' as const,
+    aiTarget: 'Gemini' as const,
     includeHandGesture: true,
     includeLeaderboard: true,
-  });
-
+  };
+  const prompt = buildMagisPrompt(config);
   assert.ok(prompt.includes('GEMINI'));
   assert.ok(prompt.includes('Sains'));
   assert.ok(prompt.includes('Tahun 4'));
   assert.ok(prompt.includes('5.1.2 Membanding dan membezakan bayang-bayang'));
   assert.ok(prompt.includes('Hand-Gesture Tracking'));
   assert.equal(prompt.toLowerCase().includes('nintendo'), false);
+
+  const shortPrompt = buildShortPreviewPrompt(config);
+  assert.ok(shortPrompt.includes('CONTOH PROMPT RINGKAS'));
+  assert.ok(shortPrompt.includes('Sains'));
+  assert.ok(shortPrompt.includes('RM 30.00'));
+  assert.ok(shortPrompt.length < prompt.length);
 });
 
 test('generateDeliveryReceipt creates 6 complete entitlements including Google Meet workshop and WhatsApp coaching', () => {

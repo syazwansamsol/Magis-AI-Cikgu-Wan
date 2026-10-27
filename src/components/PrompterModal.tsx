@@ -2,18 +2,19 @@ import React, { useState } from 'react';
 import {
   Copy,
   Check,
+  Lock,
   Sparkles,
   Wand2,
   X,
-  BookOpen,
-  Layers,
   Terminal,
+  ShoppingBag,
 } from 'lucide-react';
 import {
-  buildMagisPrompt,
+  buildShortPreviewPrompt,
   PromptBuilderConfig,
   PromptCategory,
 } from '../utils/magisLogic';
+import { CroppedArt } from './CroppedArt';
 
 interface PrompterModalProps {
   isOpen: boolean;
@@ -54,7 +55,7 @@ const PRESET_TEMPLATES: Array<{
     category: 'escape-room-kelas',
   },
   {
-    label: 'Sejarah Ting. 2 · Kesultanan Melayu Melaka (RPH DSKP)',
+    label: 'Sejarah Ting. 2 · Kesultanan Melaka (RPH DSKP)',
     subject: 'Sejarah',
     level: 'Tingkatan 2',
     topic: 'Pengasasan Kesultanan Melayu Melaka',
@@ -84,10 +85,10 @@ export const PrompterModal: React.FC<PrompterModalProps> = ({
 
   if (!isOpen) return null;
 
-  const generatedPrompt = buildMagisPrompt(config);
+  const shortPrompt = buildShortPreviewPrompt(config);
 
   const handleCopyPrompt = (targetName: 'Gemini' | 'Claude' | 'ChatGPT') => {
-    const updatedPrompt = buildMagisPrompt({ ...config, aiTarget: targetName });
+    const updatedPrompt = buildShortPreviewPrompt({ ...config, aiTarget: targetName });
     setConfig((prev) => ({ ...prev, aiTarget: targetName }));
     if (navigator.clipboard && navigator.clipboard.writeText) {
       navigator.clipboard.writeText(updatedPrompt).catch(() => {});
@@ -105,20 +106,35 @@ export const PrompterModal: React.FC<PrompterModalProps> = ({
       aria-modal="true"
       aria-labelledby="prompter-modal-title"
     >
-      <div className="relative w-full max-w-5xl rounded-3xl bg-[#0F172A] border-2 border-amber-400/40 shadow-2xl overflow-hidden max-h-[92vh] flex flex-col">
-        {/* Header */}
-        <div className="flex items-center justify-between gap-4 px-6 py-4 bg-gradient-to-r from-amber-950/80 via-slate-900 to-indigo-950 border-b border-amber-400/30">
+      <div className="relative w-full max-w-5xl rounded-3xl bg-gradient-to-b from-[#0d1f52] via-[#091538] to-[#060d24] border-2 border-sky-400/70 shadow-[0_0_80px_rgba(14,165,233,0.45)] overflow-hidden max-h-[92vh] flex flex-col">
+        {/* Console-Style Header Matching Main Interface */}
+        <div className="flex items-center justify-between gap-4 px-5 sm:px-6 py-3.5 bg-gradient-to-r from-[#0e225c] via-[#132c73] to-[#0d1e4f] border-b-2 border-sky-400/50">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-amber-400 to-orange-500 flex items-center justify-center shadow-md">
-              <Wand2 className="w-6 h-6 text-slate-950" />
+            <div className="w-12 h-12 rounded-2xl overflow-hidden border-2 border-amber-400 shadow-lg shrink-0">
+              <CroppedArt
+                x={63.8}
+                y={49.0}
+                w={12.65}
+                h={20.0}
+                alt="Robot Prompter Magis AI"
+                className="w-full h-full"
+              />
             </div>
             <div>
-              <h2 id="prompter-modal-title" className="text-lg sm:text-xl font-extrabold text-white">
+              <div className="flex items-center gap-2">
+                <span className="px-2 py-0.5 rounded-full bg-amber-400 text-slate-950 text-[10px] font-black uppercase">
+                  VERSI PRATONTON RINGKAS
+                </span>
+                <span className="text-[11px] font-extrabold text-sky-300">
+                  GEMINI · CLAUDE · CHATGPT
+                </span>
+              </div>
+              <h2
+                id="prompter-modal-title"
+                className="text-lg sm:text-xl font-black text-white tracking-tight"
+              >
                 APLIKASI PROMPTER MAGIS AI CIKGU WAN
               </h2>
-              <p className="text-xs text-amber-300">
-                Jana Prompt Permainan 3D, RPH, Kuiz & BBM — Salin Terus ke Gemini, Claude & ChatGPT
-              </p>
             </div>
           </div>
 
@@ -126,53 +142,95 @@ export const PrompterModal: React.FC<PrompterModalProps> = ({
             type="button"
             onClick={onClose}
             aria-label="Tutup tetingkap prompter"
-            className="p-2 rounded-xl bg-slate-800 hover:bg-rose-600 text-slate-200 hover:text-white border border-slate-700 transition-colors"
+            className="p-2 rounded-xl bg-slate-900/90 hover:bg-rose-600 text-slate-200 hover:text-white border border-sky-400/40 transition-colors"
           >
             <X className="w-5 h-5" />
           </button>
         </div>
 
-        {/* Content */}
-        <div className="p-5 sm:p-6 overflow-y-auto grid grid-cols-1 lg:grid-cols-12 gap-6">
-          {/* Left Configuration Column */}
+        {/* Main Body Styled Like Main Console */}
+        <div className="p-5 sm:p-6 overflow-y-auto grid grid-cols-1 lg:grid-cols-12 gap-5">
+          {/* Left Column: 3D Robot Card Visual + Preset & Subject Controls */}
           <div className="lg:col-span-6 space-y-4">
-            <div>
-              <label className="block text-xs font-bold text-amber-300 mb-2">
-                PILIH TEMPLAT PANTAS IKUT DSKP:
-              </label>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
-                {PRESET_TEMPLATES.map((item) => (
-                  <button
-                    key={item.label}
-                    type="button"
-                    onClick={() =>
-                      setConfig((prev) => ({
-                        ...prev,
-                        subject: item.subject,
-                        level: item.level,
-                        topic: item.topic,
-                        standardPembelajaran: item.standardPembelajaran,
-                        category: item.category,
-                      }))
-                    }
-                    className="text-left px-3 py-2 rounded-xl bg-slate-900 hover:bg-slate-800 border border-slate-700 hover:border-amber-400/60 text-xs font-semibold text-slate-200 transition"
-                  >
-                    {item.label}
-                  </button>
-                ))}
+            {/* Mini Visual Showcase Strip Matching Home Page */}
+            <div className="rounded-2xl bg-gradient-to-r from-[#102a6b] via-[#163582] to-[#0f2359] border border-sky-300/50 p-3 flex items-center gap-3.5 shadow-inner">
+              <div className="relative w-20 sm:w-24 shrink-0 rounded-xl overflow-hidden border border-amber-300/60 shadow-md">
+                <CroppedArt
+                  x={63.8}
+                  y={49.0}
+                  w={12.65}
+                  h={36.6}
+                  alt="Kad Prompter Magis AI"
+                  className="w-full"
+                />
+                {/* Blinking Robot Eyes inside Prompter Card */}
+                <div
+                  aria-hidden="true"
+                  className="animate-robot-blink absolute left-[50.5%] top-[44.5%] w-[6.5%] h-[4.2%] rounded-full bg-[#050b1a] pointer-events-none"
+                />
+                <div
+                  aria-hidden="true"
+                  className="animate-robot-blink absolute left-[61.8%] top-[44.5%] w-[6.5%] h-[4.2%] rounded-full bg-[#050b1a] pointer-events-none"
+                />
+              </div>
+
+              <div className="space-y-1">
+                <div className="text-xs font-black text-amber-300 flex items-center gap-1">
+                  <Wand2 className="w-3.5 h-3.5" />
+                  CONTOH PROMPTER MAGIS AI
+                </div>
+                <p className="text-xs text-sky-100 leading-relaxed">
+                  Cuba jana <strong>Prompt Ringkas</strong> di bawah secara percuma. Untuk membuka kunci <strong>Prompt Master 5-Lapis Penuh (Kod 3D Hand-Gesture + 8 Soalan DSKP + 120 Templat Pro)</strong>, dapatkan Pakej Lengkap RM 30.00!
+                </p>
               </div>
             </div>
 
+            {/* Preset DSKP Pills */}
+            <div>
+              <label className="block text-xs font-extrabold text-amber-300 mb-2">
+                1. PILIH CONTOH TOPIK PANTAS (DSKP KPM):
+              </label>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                {PRESET_TEMPLATES.map((item) => {
+                  const isSelected = config.topic === item.topic;
+                  return (
+                    <button
+                      key={item.label}
+                      type="button"
+                      onClick={() =>
+                        setConfig((prev) => ({
+                          ...prev,
+                          subject: item.subject,
+                          level: item.level,
+                          topic: item.topic,
+                          standardPembelajaran: item.standardPembelajaran,
+                          category: item.category,
+                        }))
+                      }
+                      className={`text-left px-3 py-2 rounded-xl border text-xs font-bold transition ${
+                        isSelected
+                          ? 'bg-gradient-to-r from-sky-500 to-blue-600 text-white border-white shadow-md'
+                          : 'bg-[#0a173d] hover:bg-[#112459] border-sky-400/30 text-sky-100'
+                      }`}
+                    >
+                      {item.label}
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+
+            {/* Subject & Level Selectors */}
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
               <div>
-                <label htmlFor="prompter-subject" className="block text-xs font-bold text-slate-300 mb-1">
+                <label htmlFor="prompter-subject" className="block text-xs font-bold text-sky-200 mb-1">
                   Mata Pelajaran
                 </label>
                 <select
                   id="prompter-subject"
                   value={config.subject}
                   onChange={(e) => setConfig({ ...config, subject: e.target.value })}
-                  className="w-full px-3 py-2 rounded-xl bg-slate-900 border border-slate-700 text-xs sm:text-sm text-white focus:outline-none focus:border-amber-400"
+                  className="w-full px-3 py-2 rounded-xl bg-[#071130] border border-sky-400/40 text-xs sm:text-sm text-white font-semibold focus:outline-none focus:border-amber-400"
                 >
                   <option value="Sains">Sains</option>
                   <option value="Matematik">Matematik</option>
@@ -185,14 +243,14 @@ export const PrompterModal: React.FC<PrompterModalProps> = ({
               </div>
 
               <div>
-                <label htmlFor="prompter-level" className="block text-xs font-bold text-slate-300 mb-1">
+                <label htmlFor="prompter-level" className="block text-xs font-bold text-sky-200 mb-1">
                   Tahun / Tingkatan
                 </label>
                 <select
                   id="prompter-level"
                   value={config.level}
                   onChange={(e) => setConfig({ ...config, level: e.target.value })}
-                  className="w-full px-3 py-2 rounded-xl bg-slate-900 border border-slate-700 text-xs sm:text-sm text-white focus:outline-none focus:border-amber-400"
+                  className="w-full px-3 py-2 rounded-xl bg-[#071130] border border-sky-400/40 text-xs sm:text-sm text-white font-semibold focus:outline-none focus:border-amber-400"
                 >
                   <option value="Tahun 1">Tahun 1</option>
                   <option value="Tahun 2">Tahun 2</option>
@@ -209,8 +267,8 @@ export const PrompterModal: React.FC<PrompterModalProps> = ({
             </div>
 
             <div>
-              <label htmlFor="prompter-category" className="block text-xs font-bold text-slate-300 mb-1">
-                Jenis Modul / Permainan AI
+              <label htmlFor="prompter-category" className="block text-xs font-bold text-sky-200 mb-1">
+                Jenis Bahan / Permainan AI
               </label>
               <select
                 id="prompter-category"
@@ -218,7 +276,7 @@ export const PrompterModal: React.FC<PrompterModalProps> = ({
                 onChange={(e) =>
                   setConfig({ ...config, category: e.target.value as PromptCategory })
                 }
-                className="w-full px-3 py-2 rounded-xl bg-slate-900 border border-slate-700 text-xs sm:text-sm text-white focus:outline-none focus:border-amber-400"
+                className="w-full px-3 py-2 rounded-xl bg-[#071130] border border-sky-400/40 text-xs sm:text-sm text-white font-semibold focus:outline-none focus:border-amber-400"
               >
                 <option value="permainan-3d-tangan">
                   Permainan 3D Kawalan Tangan (Hand-Gesture Sukan)
@@ -239,7 +297,7 @@ export const PrompterModal: React.FC<PrompterModalProps> = ({
             </div>
 
             <div>
-              <label htmlFor="prompter-topic" className="block text-xs font-bold text-slate-300 mb-1">
+              <label htmlFor="prompter-topic" className="block text-xs font-bold text-sky-200 mb-1">
                 Tajuk Fokus Pengajaran
               </label>
               <input
@@ -247,77 +305,53 @@ export const PrompterModal: React.FC<PrompterModalProps> = ({
                 type="text"
                 value={config.topic}
                 onChange={(e) => setConfig({ ...config, topic: e.target.value })}
-                className="w-full px-3.5 py-2 rounded-xl bg-slate-900 border border-slate-700 text-xs sm:text-sm text-white focus:outline-none focus:border-amber-400"
+                className="w-full px-3.5 py-2 rounded-xl bg-[#071130] border border-sky-400/40 text-xs sm:text-sm text-white focus:outline-none focus:border-amber-400"
               />
-            </div>
-
-            <div>
-              <label htmlFor="prompter-sp" className="block text-xs font-bold text-slate-300 mb-1">
-                Standard Pembelajaran (DSKP)
-              </label>
-              <input
-                id="prompter-sp"
-                type="text"
-                value={config.standardPembelajaran}
-                onChange={(e) =>
-                  setConfig({ ...config, standardPembelajaran: e.target.value })
-                }
-                className="w-full px-3.5 py-2 rounded-xl bg-slate-900 border border-slate-700 text-xs sm:text-sm text-white focus:outline-none focus:border-amber-400"
-              />
-            </div>
-
-            <div className="flex flex-wrap items-center gap-4 pt-1">
-              <label className="flex items-center gap-2 text-xs text-slate-200 cursor-pointer">
-                <input
-                  type="checkbox"
-                  checked={config.includeHandGesture}
-                  onChange={(e) =>
-                    setConfig({ ...config, includeHandGesture: e.target.checked })
-                  }
-                  className="rounded border-slate-600 text-amber-400 focus:ring-amber-400"
-                />
-                <span>Masukkan Kawalan Tangan (Hand-Gesture)</span>
-              </label>
-              <label className="flex items-center gap-2 text-xs text-slate-200 cursor-pointer">
-                <input
-                  type="checkbox"
-                  checked={config.includeLeaderboard}
-                  onChange={(e) =>
-                    setConfig({ ...config, includeLeaderboard: e.target.checked })
-                  }
-                  className="rounded border-slate-600 text-amber-400 focus:ring-amber-400"
-                />
-                <span>Masukkan Papan Markah Kelas</span>
-              </label>
             </div>
           </div>
 
-          {/* Right Output & 1-Click Copy Column */}
+          {/* Right Column: Short Preview Prompt + Locked Pro Features + 1-Click Copy */}
           <div className="lg:col-span-6 flex flex-col justify-between space-y-4">
-            <div className="space-y-2">
+            <div className="space-y-2.5">
               <div className="flex items-center justify-between">
-                <span className="text-xs font-bold text-sky-300 flex items-center gap-1.5">
-                  <Terminal className="w-4 h-4" />
-                  PRATONTON PROMPT MAGIS SIAP GUNA
+                <span className="text-xs font-black text-amber-300 flex items-center gap-1.5">
+                  <Terminal className="w-4 h-4 text-sky-400" />
+                  CONTOH PROMPT RINGKAS (VERSI DEMO)
                 </span>
-                <span className="text-xs text-slate-400">
-                  Dioptimumkan untuk: <strong className="text-amber-300">{config.aiTarget}</strong>
+                <span className="text-xs text-sky-200">
+                  Sasaran AI: <strong className="text-amber-300">{config.aiTarget}</strong>
                 </span>
               </div>
 
               <textarea
                 readOnly
-                aria-label="Teks Prompt Magis AI"
-                value={generatedPrompt}
-                rows={11}
-                className="w-full p-3.5 rounded-2xl bg-slate-950 border border-sky-500/30 font-mono text-xs text-sky-100 leading-relaxed focus:outline-none"
+                aria-label="Teks Prompt Magis AI Ringkas"
+                value={shortPrompt}
+                rows={6}
+                className="w-full p-3.5 rounded-2xl bg-[#050b1f] border-2 border-sky-400/50 font-mono text-xs text-sky-100 leading-relaxed focus:outline-none shadow-inner"
               />
+
+              {/* Locked Pro Master Prompt Preview Card */}
+              <div className="rounded-2xl bg-gradient-to-r from-amber-500/15 via-[#0b1942] to-purple-900/30 border border-amber-400/60 p-3 space-y-1.5">
+                <div className="flex items-center justify-between text-xs font-black text-amber-300">
+                  <span className="flex items-center gap-1.5">
+                    <Lock className="w-3.5 h-3.5 text-amber-400" />
+                    MODUL PROMPT MASTER PRO (TERMASUK DALAM PAKEJ RM30)
+                  </span>
+                  <span className="px-2 py-0.5 rounded-full bg-amber-400/20 text-[10px]">
+                    EKSKLUSIF PEMBELI
+                  </span>
+                </div>
+                <p className="text-[11px] text-sky-100 leading-relaxed">
+                  Dalam versi berbayar RM 30.00, Cikgu mendapat <strong>Prompt Penuh 5-Lapis (Kod Three.js 3D + MediaPipe Hand-Gesture + Papan Skor + 120 Templat Semua Subjek)</strong> yang menghasilkan permainan 3D penuh seperti Gelanggang Tenis Cikgu Wan!
+                </p>
+              </div>
             </div>
 
             {/* 1-Click Copy Buttons for Gemini, Claude, ChatGPT */}
             <div className="space-y-2.5">
-              <div className="text-xs font-bold text-slate-300">
-                KLIK UNTUK SALIN TERUS KE PLATFORM AI PILIHAN:
+              <div className="text-xs font-extrabold text-sky-200">
+                2. SALIN PROMPT RINGKAS KE PLATFORM AI PILIHAN:
               </div>
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5">
                 {(['Gemini', 'Claude', 'ChatGPT'] as const).map((platform) => {
@@ -327,14 +361,14 @@ export const PrompterModal: React.FC<PrompterModalProps> = ({
                       key={platform}
                       type="button"
                       onClick={() => handleCopyPrompt(platform)}
-                      className={`py-2.5 px-3 rounded-xl font-extrabold text-xs flex items-center justify-center gap-1.5 transition shadow ${
+                      className={`py-2.5 px-3 rounded-xl font-black text-xs flex items-center justify-center gap-1.5 transition shadow-lg ${
                         isCopied
-                          ? 'bg-emerald-500 text-slate-950'
+                          ? 'bg-emerald-400 text-slate-950'
                           : platform === 'Gemini'
-                          ? 'bg-sky-500 hover:bg-sky-400 text-slate-950'
+                          ? 'bg-gradient-to-r from-sky-400 to-blue-500 hover:from-sky-300 hover:to-blue-400 text-slate-950'
                           : platform === 'Claude'
-                          ? 'bg-amber-500 hover:bg-amber-400 text-slate-950'
-                          : 'bg-teal-500 hover:bg-teal-400 text-slate-950'
+                          ? 'bg-gradient-to-r from-amber-400 to-orange-500 hover:from-amber-300 hover:to-orange-400 text-slate-950'
+                          : 'bg-gradient-to-r from-teal-400 to-emerald-500 hover:from-teal-300 hover:to-emerald-400 text-slate-950'
                       }`}
                     >
                       {isCopied ? (
@@ -356,20 +390,25 @@ export const PrompterModal: React.FC<PrompterModalProps> = ({
               {copiedPlatform && (
                 <div
                   role="status"
-                  className="p-2.5 rounded-xl bg-emerald-950/90 border border-emerald-400/50 text-xs text-emerald-200 font-semibold flex items-center gap-2"
+                  className="p-2.5 rounded-xl bg-emerald-950/90 border border-emerald-400/60 text-xs text-emerald-200 font-bold flex items-center gap-2"
                 >
                   <Sparkles className="w-4 h-4 text-emerald-400 shrink-0" />
                   <span>
-                    Prompt berjaya disalin! Tampal (Paste) terus ke dalam {copiedPlatform} untuk menjana permainan/modul anda.
+                    Prompt ringkas berjaya disalin! Tampal (Paste) ke dalam {copiedPlatform}.
                   </span>
                 </div>
               )}
             </div>
 
-            {/* Upsell Banner for Full 120+ Prompt Library */}
-            <div className="p-3.5 rounded-2xl bg-gradient-to-r from-indigo-950 via-slate-900 to-amber-950/50 border border-amber-400/30 flex flex-wrap items-center justify-between gap-3">
-              <div className="text-xs text-slate-200">
-                <strong className="text-amber-300">Pakej Penuh RM30:</strong> Buka kunci 120+ Templat Prompt Pro untuk semua subjek & permainan 3D!
+            {/* Golden Console CTA Banner */}
+            <div className="p-3.5 rounded-2xl bg-gradient-to-r from-amber-400 via-yellow-400 to-amber-500 text-slate-950 flex flex-wrap items-center justify-between gap-3 shadow-xl">
+              <div className="text-xs font-extrabold">
+                <div className="text-sm font-black">
+                  Buka Kunci Prompter Pro Penuh + 2 Modul PDF + Game 3D!
+                </div>
+                <div>
+                  Termasuk Bengkel Hands-On 31 Okt 2026 (8:30 Mlm) & Group WhatsApp Coaching.
+                </div>
               </div>
               <button
                 type="button"
@@ -377,9 +416,10 @@ export const PrompterModal: React.FC<PrompterModalProps> = ({
                   onClose();
                   onOpenCheckout();
                 }}
-                className="px-4 py-2 rounded-xl bg-amber-400 hover:bg-amber-300 text-slate-950 font-extrabold text-xs whitespace-nowrap shrink-0"
+                className="px-4 py-2.5 rounded-xl bg-slate-950 hover:bg-slate-900 text-amber-300 font-black text-xs flex items-center gap-1.5 whitespace-nowrap shrink-0 shadow-md"
               >
-                Beli Pakej RM30 →
+                <ShoppingBag className="w-4 h-4" />
+                Dapatkan Pakej RM30 →
               </button>
             </div>
           </div>
